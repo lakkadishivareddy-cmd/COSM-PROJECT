@@ -1,0 +1,66 @@
+# ---------------------------------------------
+# Statistical Tests: t-test, F-test, Z-test
+# ---------------------------------------------
+
+import numpy as np
+import pandas as pd
+from scipy import stats
+from statsmodels.stats.weightstats import ztest
+
+# Example dataset (Heights)
+heights = np.array([150, 152, 160, 158, 170, 165, 172, 168, 155, 161])
+weights = np.array([50, 52, 54, 60, 65, 68, 70, 72, 55, 58])
+
+
+# -----------------------------------------------------
+# 1. ONE-SAMPLE t-TEST (compare sample mean with a value)
+# -----------------------------------------------------
+print("=== ONE SAMPLE t-TEST ===")
+t_stat, p_value = stats.ttest_1samp(heights, 160)
+print("t-statistic:", t_stat)
+print("p-value:", p_value)
+
+
+# -----------------------------------------------------
+# 2. TWO-SAMPLE t-TEST (independent samples)
+# -----------------------------------------------------
+print("\n=== TWO SAMPLE t-TEST ===")
+t_stat, p_value = stats.ttest_ind(heights, weights)
+print("t-statistic:", t_stat)
+print("p-value:", p_value)
+
+
+# -----------------------------------------------------
+# 3. PAIRED t-TEST (before vs after type data)
+# -----------------------------------------------------
+before = np.array([60, 62, 61, 63, 65])
+after  = np.array([62, 63, 64, 64, 67])
+
+print("\n=== PAIRED t-TEST ===")
+t_stat, p_value = stats.ttest_rel(before, after)
+print("t-statistic:", t_stat)
+print("p-value:", p_value)
+
+
+# -----------------------------------------------------
+# 4. F-TEST (variance comparison)
+# -----------------------------------------------------
+print("\n=== F-TEST for Variances ===")
+var1 = np.var(heights, ddof=1)
+var2 = np.var(weights, ddof=1)
+
+F = var1 / var2
+df1 = len(heights) - 1
+df2 = len(weights) - 1
+
+print("F-value:", F)
+print("df1:", df1, ", df2:", df2)
+
+
+# -----------------------------------------------------
+# 5. Z-TEST (for mean, large sample or known variance)
+# -----------------------------------------------------
+print("\n=== Z-TEST ===")
+z_stat, p_val = ztest(heights, value=160)
+print("z-statistic:", z_stat)
+print("p-value:", p_val)
